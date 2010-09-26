@@ -46,4 +46,4 @@ There is also some little changes of the internal structures of objects in scrip
     * proxy.global becomes proxy.globals, since "global" is a keyword in python.
     * proxy.response.resultset now becomes to a dict with at lease tow keys: fields and rows. 
 
-More details of plugin interfaces is described in [Plugin Interface].
+More details of plugin interfaces is described in [plugin_interface API].
