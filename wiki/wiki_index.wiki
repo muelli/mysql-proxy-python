@@ -1,4 +1,3 @@
-#slidebar
 ==Table Of Contents==
     * [installation_guide Installation Guide]
     * [basic_usage Basic Usage]
