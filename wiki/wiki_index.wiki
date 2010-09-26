@@ -1,5 +1,5 @@
+#slidebar
 ==Table Of Contents==
     * [installation_guide Installation Guide]
     * [basic_usage Basic Usage]
     * [a_simple_example A Simple Example]
-    * [plugin_interface API]
