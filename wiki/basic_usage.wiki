@@ -3,7 +3,7 @@
 
 First of all, you should read the mysql-proxy document to know how to use lua script and get the examples work. The usage of this plugin is almost the same as using lua script in mysql-proxy, except several different configurations and off course, script syntax.
 
-The first thing you should do is make a proper configuration, both in the form of ini file and as command-line options when start up mysql-proxy will be OK. Existing options and their functions of mysql-proxy are not affected. This plugin add several extra options which enables you specify the python script, proxy address, backend address and so on. Details of these options is described in the following paragraph [http://code.google.com/p/mysql-proxy-python/#Differences_between_lua_scripting_and_python_scripting Differences between lua scripting and python scripting]. The most important is, you should add "pyproxy" to option "plugins" to explicitly indicate mysql-proxy load this plugin, like:
+The first thing you should do is make a proper configuration, both in the form of ini file and as command-line options when start up mysql-proxy will be OK. Existing options and their functions of mysql-proxy are not affected. This plugin add several extra options which enables you specify the python script, proxy address, backend address and so on. Details of these options is described in the following paragraph [https://code.google.com/p/mysql-proxy-python/wiki/basic_usage#Differences_between_lua_scripting_and_python_scripting Differences between lua scripting and python scripting]. The most important is, you should add "pyproxy" to option "plugins" to explicitly indicate mysql-proxy load this plugin, like:
 {{{
     plugins=admin,proxy,pyproxy
 }}}
@@ -42,8 +42,6 @@ There is few changes in the plugin interface which refers to the several hook fu
 
 There is another difference between the execution of lua script and python script: each time a hook function executes, the lua script is reloaded, the requested lua function is executed, so the local variable defined in lua script is "execution scope". For python, the python script is loaded once at the startup time, then the functions are stored in memory, each time the hook function executes, the stored function is retrieved directly and executed. So the variable defined in python script is "global scope".
 
-There is also some little changes of the internal structures of objects in script. Here list them:
-    * proxy.global becomes proxy.globals, since "global" is a keyword in python.
-    * proxy.response.resultset now becomes to a dict with at lease tow keys: fields and rows. 
+Almost all of the classes and names of their data members and methods remain the same, except lua's "proxy.global" becomes python's "proxy.globals" since "global" is a keyword in python.
 
-More details of plugin interfaces is described in [plugin_interface API].
+All the table objects in lua become dict or a kind of object which you can retrive members using '.' syntax. By study the examples you can get details of these changes.
