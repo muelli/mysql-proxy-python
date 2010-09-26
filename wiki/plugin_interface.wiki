@@ -1,0 +1,58 @@
+==Plugin Interface==
+
+The plugin interface refers to the api you can use in python script. Here explain the api through the seven hook functions and python object structures.
+
+|| *hook function* ||
+|| connect_server(proxy) ||
+|| read_handshake(proxy) ||
+|| read_auth(proxy) ||
+|| read_auth_result(proxy, auth) ||
+|| read_query(proxy, packet) ||
+|| read_query_result(proxy, injection) ||
+|| disconnect_client(proxy) ||
+
+These functions are usually module functions. In fact they can be any module-level callable objects as long as they accept the corresponding parameters.
+
+Fist let's explain the common parameter "proxy" of all these functions.
+
+"proxy" object is created each time one of those function is called. It contains some useful constants and all the connection information of the current client. Here list some of the constants:
+    * mysql-proxy version: proxy.PROXY_VERSION
+    * hook functions return values
+        # proxy.PROXY_SEND_QUERY: indicate proxy send a query to backend server.
+        # proxy.PROXY_SEND_RESULT: indicate proxy send a query result to client.
+        # proxy.PROXY_IGNORE_RESULT: indicate proxy send nothing to client.
+    * query result types
+        # proxy.MYSQLD_PACKET_OK: a successful query result, with fields and rows.
+        # proxy.MYSQLD_PACKET_ERR: an error result, with error code and message.
+        # proxy.MYSQLD_PACKET_RAW: use raw bytes as result.
+    * backend mysql server state
+        # proxy.BACKEND_STATE_DOWN: the backend server is unavailable.
+        # proxy.BACKEND_STATE_UP: the backend server is available.
+        # proxy.BACKEND_STATE_UNKNOWN: the backend server'state is unknown.
+    * backend mysql server type
+        # proxy.BACKEND_STATE_RO: a read only backend server.
+        # proxy.BACKEND_STATE_RW: a read write backend server.
+        # proxy.BACKEND_STATE_UNKNOWN: the backend server'type is unknown.
+    * client query type
+        # proxy.COM_QUERY: a normal "SELECT" statement.
+        # proxy.COM_QUIT
+        # proxy.COM_DROP_DB
+        # proxy.COM_SHUTDOWN
+        # proxy.COM_TIME
+        # ......
+    * mysql data type
+        # proxy.MYSQL_TYPE_TINY
+        # proxy.MYSQL_TYPE_SHORT
+        # proxy.MYSQL_TYPE_LONG
+        # proxy.MYSQL_TYPE_FLOAT
+        # proxy.MYSQL_TYPE_NULL
+        # proxy.MYSQL_TYPE_TIMESTAMP
+        # proxy.MYSQL_TYPE_DATETIME
+        # proxy.MYSQL_TYPE_STRING
+        # ......
+
+
+
+====connect_server()====
+
+This function is called when a client first connect to proxy server. 
