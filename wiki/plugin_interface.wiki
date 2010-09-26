@@ -1,6 +1,6 @@
-==Plugin Interface==
+==API==
 
-The plugin interface refers to the api you can use in python script. Here explain the api through the seven hook functions and python object structures.
+Tthe api you can use in your python script is almost the same as that in lua, except the 
 
 || *hook function* ||
 || connect_server(proxy) ||
@@ -11,9 +11,9 @@ The plugin interface refers to the api you can use in python script. Here explai
 || read_query_result(proxy, injection) ||
 || disconnect_client(proxy) ||
 
-These functions are usually module functions. In fact they can be any module-level callable objects as long as they accept the corresponding parameters.
+These functions are usually module functions. In fact they can be any module-level callable objects as long as they accept the corresponding parameters. These function has exactly the same meaning as those in lua. Please read the document in mysql-proxy package to gain a deeper understanding of mysql client/server communication stages and the behavior of those hook functions.
 
-Fist let's explain the common parameter "proxy" of all these functions.
+Now let's explain the common parameter "proxy" of all these functions.
 
 "proxy" object is created each time one of those function is called. It contains some useful constants and all the connection information of the current client. Here list some of the constants:
     * mysql-proxy version: proxy.PROXY_VERSION
@@ -33,13 +33,13 @@ Fist let's explain the common parameter "proxy" of all these functions.
         # proxy.BACKEND_STATE_RO: a read only backend server.
         # proxy.BACKEND_STATE_RW: a read write backend server.
         # proxy.BACKEND_STATE_UNKNOWN: the backend server'type is unknown.
-    * client query type
+    * client query type, here query refers to any packet client sent to server
         # proxy.COM_QUERY: a normal "SELECT" statement.
         # proxy.COM_QUIT
         # proxy.COM_DROP_DB
         # proxy.COM_SHUTDOWN
         # proxy.COM_TIME
-        # ......
+        # ...... Detailed information of more query types can be found on mysql protocol page http://forge.mysql.com/wiki/MySQL_Internals_ClientServer_Protocol
     * mysql data type
         # proxy.MYSQL_TYPE_TINY
         # proxy.MYSQL_TYPE_SHORT
@@ -51,8 +51,5 @@ Fist let's explain the common parameter "proxy" of all these functions.
         # proxy.MYSQL_TYPE_STRING
         # ......
 
-
-
-====connect_server()====
-
-This function is called when a client first connect to proxy server. 
+Per-connection information of "proxy" object:
+    * proxy.connection: 
